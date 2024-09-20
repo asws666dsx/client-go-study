@@ -41,6 +41,5 @@ func main() {
 	stopCh := make(chan struct{})
 	factory.Start(stopCh)
 	factory.WaitForCacheSync(stopCh)
-	// 	c.queue.Add(ingress.Namespace + "/" + ingress.Name)
 	controller.Run(stopCh)
 }

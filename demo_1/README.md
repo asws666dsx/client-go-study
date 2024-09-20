@@ -42,5 +42,5 @@ metadata：
 ```
 部署
 ```shell
-
+kubectl apply  -f https://raw.githubusercontent.com/asws666dsx/client-go-study/refs/heads/main/demo_1/deployment.yaml
 ```
