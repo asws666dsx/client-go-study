@@ -1,7 +1,7 @@
 package main
 
 import (
-	"clinet-go-study/demo_1/pkg"
+	"demo_1/pkg"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -27,6 +27,8 @@ func main() {
 	}
 
 	// 3.informer
+
+	//factory := informers.NewFilteredSharedInformerFactory(clientSet, time.Second*30, "default", nil)    监听特点命名空间
 	factory := informers.NewSharedInformerFactory(clientSet, 0)
 	//
 	servicesInformer := factory.Core().V1().Services()

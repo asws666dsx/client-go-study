@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-ingressmanager
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: svc-ingressmanager
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - "networking.k8s.io"
+    resources:
+      - ingresses
+    verbs:
+      - list
+      - watch
+      - create
+      - update
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: svc-ingressmanager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: svc-ingressmanager
+subjects:
+  - kind: ServiceAccount
+    name: svc-ingressmanager
+    namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: svc-ingressmanager
+  name: svc-ingressmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: svc-ingressmanager
+  template:
+    metadata:
+      labels:
+        app: svc-ingressmanager
+    spec:
+      serviceAccount: svc-ingressmanager
+      containers:
+        - image: registry.cn-beijing.aliyuncs.com/wdtn/svcingrssmanager:v1
+          name: svcingrssmanager
+          resources:
+            limits:
+              cpu: "150m"
+              memory: "150Mi"
+            requests:
+              cpu: "150m"
+              memory: "150Mi"
+---
